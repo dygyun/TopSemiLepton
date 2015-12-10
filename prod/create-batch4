@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+import sys, os
+
+from urllib import urlopen
+import csv
+import json
+#> catGetDatasetInfo v7-4-3
+cmsswpath=os.environ.get('SRT_CMSSW_BASE_SCRAMRTDEL')+"/src/CATTools/CatAnalyzer/data/"
+json_ = open(cmsswpath+"dataset.json")
+dataset = json.load(json_)
+
+iii=0
+#args=["--jobName","--fileList","--maxFiles","--cfg","--transferDest","--args"]
+args=["--jobName","--fileList","--maxFiles","--cfg","--transferDest","--args","--customise customise_cff.py"]
+for aa in dataset:
+ isRDsl = (aa['name'].find("SingleMuon")>-1 or aa['name'].find("SingleElectron")>-1)
+ isRDdl = (aa['name'].find("DoubleEG")>-1 or aa['name'].find("MuonEG")>-1 or aa['name'].find("DoubleEG")>-1)
+ isNoUseMC = (aa['name'].find("tt")>-1 or aa['name'].find("QCD")>-1)
+# if not skip and isDATA :
+ if not (isRDdl or isNoUseMC ):
+   ddd = "./create-batch "
+   ddd+= args[0]+" "+aa['name']+" "
+   ddd+= args[1]+" "+cmsswpath+"dataset_"+aa['name']+".txt "
+   if ( aa['name'].find("SingleMuon")>-1 or aa['name'].find("SingleElectron")>-1 ) :
+     ddd+= args[3]+" ttbarSingleLeptonAnalyzer_RD_cfg.py "
+   elif ( aa['name'].find("TT")>-1 ) :
+     ddd+= args[3]+" ttbarSingleLeptonAnalyzer_ttbar_cfg.py "
+   else :
+     ddd+= args[3]+" ttbarSingleLeptonAnalyzer_MC_cfg.py "
+   fff = "/store/user/dygyun/Cattools/v746_Golden/"+aa['name']
+   ddd+= args[4]+" "+fff+" "
+   ddd+= args[6]
+
+   print ddd
+   os.system(ddd)
+   iii=iii+1
+
+
