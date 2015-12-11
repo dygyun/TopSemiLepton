@@ -1,5 +1,5 @@
 # Data or MC Sample
-runOnMC      = False
+runOnMC      = True
 # runOnTTbarMC == 0, No ttbar
 # runOnTTbarMC == 1, ttbar Signal
 # runOnTTbarMC == 2, ttbar Background
@@ -17,44 +17,52 @@ process.MessageLogger.cerr.INFO = cms.untracked.PSet(
 )
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-        #'file:/afs/cern.ch/user/b/brochero/CATTuples_August/v7-3-6/cat74/src/CATTools/CatProducer/prod/catTuple-PUPPI-v7-3-6.root' # -- MC PUPPI (v7-3-6)
-        #'file:/cms/scratch/CAT/TT_TuneCUETP8M1_13TeV-powheg-pythia8/v7-3-2_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v4/150805_203807/0000/catTuple_245.root' # -- MC
-        #'root://cms-xrdr.sdfarm.kr///xrd/store/group/CAT/TT_TuneCUETP8M1_13TeV-powheg-pythia8/v7-3-4_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v4/150810_215031/0000/catTuple_276.root' # -- MC
-        #'file:/cms/home/brochero/CATTuples_August/v7-3-4/cat74/src/CATTools/CatAnalyzer/prod/SingleMu-PromptReco_catTuple_44.root'   # -- DATA
-        #'root://cms-xrdr.sdfarm.kr///xrd/store/group/CAT/TT_TuneCUETP8M1_13TeV-powheg-pythia8/v7-3-6_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v4/150820_215807/0000/catTuple_108.root'    # -- XROOT test
-   ###     'file:/cms/home/brochero/CATTuples_August/Central-v7-3-6/cat74/src/CATTools/CatAnalyzer/prod/catTuple_108.root' # -- MC
-        #'file:/cms/home/brochero/CATTuples_July/cat74/src/CATTools/CatAnalyzer/catTuple_83.root' # -- Data
+        #'root://cms-xrdr.sdfarm.kr:1094///xrd/store/group/CAT/TT_TuneCUETP8M1_13TeV-powheg-pythia8/v7-4-5_RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/151109_234028/0000/catTuple_1.root'
+        'root://cms-xrdr.sdfarm.kr:1094///xrd/store/group/CAT/SingleMuon/v7-4-5_Run2015D-05Oct2015-v1/151109_230333/0000/catTuple_1.root'
     )
 )
+# PUReWeight
+# process.load("CATTools.CatProducer.pileupWeight_cff")
+# from CATTools.CatProducer.pileupWeight_cff import pileupWeightMap
+# process.pileupWeight.weightingMethod = "RedoWeight"
+# process.pileupWeight.pileupRD = pileupWeightMap["Run2015_25nsV1"]
+# process.pileupWeight.pileupUp = pileupWeightMap["Run2015Up_25nsV1"]
+# process.pileupWeight.pileupDn = pileupWeightMap["Run2015Dn_25nsV1"]
+
 # json file (Only Data)
-#import FWCore.PythonUtilities.LumiList as LumiList
-#process.source.lumisToProcess = LumiList.LumiList(filename = 'Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON_v2.txt').getVLuminosityBlockRange()
+import FWCore.PythonUtilities.LumiList as LumiList
+# process.source.lumisToProcess = LumiList.LumiList(filename = 'Cert_246908-259891_13TeV_PromptReco_Collisions15_25ns_JSON_Silver.txt').getVLuminosityBlockRange()
+process.source.lumisToProcess = LumiList.LumiList(filename = 'Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON.txt').getVLuminosityBlockRange()
+
 process.ttbarSingleLepton = cms.EDAnalyzer('TtbarSingleLeptonAnalyzer',
                                            sampleLabel       = cms.untracked.bool(runOnMC),
                                            TTbarSampleLabel  = cms.untracked.int32(runOnTTbarMC),
-                                           genLabel      = cms.InputTag("prunedGenParticles"),
-                                           muonLabel     = cms.InputTag("catMuons"),
-                                           electronLabel = cms.InputTag("catElectrons"),
-                                           jetLabel      = cms.InputTag("catJets"),
-                                           metLabel      = cms.InputTag("catMETs"),
-                                           metnoHFLabel  = cms.InputTag("catMETsNoHF"),
-                                           metPuppiLabel = cms.InputTag("catMETsPuppi"),
-                                           #metLabel      = cms.InputTag("catMETsNoHF"),
-                                           pvLabel       = cms.InputTag("catVertex:nGoodPV"),
-                                           puWeight      = cms.InputTag("pileupWeight"),
-                                           triggerBits = cms.InputTag("TriggerResults::HLT"), # Not working yet
-                                           triggerObjects = cms.InputTag("catTrigger"), # Not working yet
-                                           #trigLabel     = cms.InputTag("catTrigger"), # Not working yet
+                                           genWeightLabel    = cms.InputTag("genWeight:genWeight"),
+                                           genLabel          = cms.InputTag("prunedGenParticles"),
+                                           genttbarCatLabel  = cms.InputTag("GenTtbarCategories:genTtbarId"),
+                                           muonLabel         = cms.InputTag("catMuons"),
+                                           electronLabel     = cms.InputTag("catElectrons"),
+                                           jetLabel          = cms.InputTag("catJets"),
+                                           #metLabel         = cms.InputTag("catMETs"),
+                                           metLabel          = cms.InputTag("catMETsNoHF"),
+                                           pvLabel           = cms.InputTag("catVertex:nGoodPV"),
+                                           puWeightLabel     = cms.InputTag("pileupWeight"),
+                                           triggerBits       = cms.InputTag("TriggerResults::HLT"), # Not working yet
+                                           triggerObjects    = cms.InputTag("catTrigger"), # Not working yet
                                            )
 
 process.TFileService = cms.Service("TFileService",
                                        fileName = cms.string('vallot.root')
                                    )
+
 #process.Tracer = cms.Service("Tracer")
 #process.dump=cms.EDAnalyzer('EventContentAnalyzer')
 #process.p = cms.Path(process.demo*process.dump)
+# process.p = cms.Path(process.pileupWeight*
+#                      process.ttbarSingleLepton)
 process.p = cms.Path(process.ttbarSingleLepton)
+
