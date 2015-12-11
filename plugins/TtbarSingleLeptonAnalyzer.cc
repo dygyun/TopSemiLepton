@@ -730,7 +730,6 @@ bool TtbarSingleLeptonAnalyzer::IsLooseElectron(const cat::Electron & i_electron
   return GoodElectron;
 
 }
-
 //define this as a plug-in
 DEFINE_FWK_MODULE(TtbarSingleLeptonAnalyzer);
 
