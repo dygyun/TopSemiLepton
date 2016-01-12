@@ -91,7 +91,15 @@ private:
   float b_Lepton_E;
   float b_Lepton_pT;
 
+  float b_Lepton_relIso;
+/////////
+  float b_Wmass; 
   // Jets
+ // int b_nJet30;
+  int b_nBJet30M;
+
+  std::vector<float> *b_Jet_drLep;
+
   int b_Jet_Number;
   std::vector<float> *b_Jet_px;
   std::vector<float> *b_Jet_py;
@@ -192,7 +200,9 @@ TtbarSingleLeptonAnalyzer::TtbarSingleLeptonAnalyzer(const edm::ParameterSet& iC
   tree->Branch("lepton_pz", &b_Lepton_pz, "lepton_pz/F");
   tree->Branch("lepton_E" , &b_Lepton_E,  "lepton_E/F" );
   tree->Branch("lepton_pT", &b_Lepton_pT, "lepton_pT/F" );
-
+///////
+  tree->Branch("lepton_relIso", &b_Lepton_relIso, "lepton_relIso/F");
+/////
   tree->Branch("jet_px", "std::vector<float>", &b_Jet_px);
   tree->Branch("jet_py", "std::vector<float>", &b_Jet_py);
   tree->Branch("jet_pz", "std::vector<float>", &b_Jet_pz);
@@ -200,7 +210,11 @@ TtbarSingleLeptonAnalyzer::TtbarSingleLeptonAnalyzer(const edm::ParameterSet& iC
   tree->Branch("jet_pT", "std::vector<float>", &b_Jet_pT );
 
   tree->Branch("jet_Number" , &b_Jet_Number, "jet_number/I" );
-
+//
+  tree->Branch("nBJet30M", &b_nBJet30M, "nBJet30M/I");
+  tree->Branch("Wmass" , &b_Wmass, "Wmass/F");
+  tree->Branch("jet_drLep" , "std::vector<float>", &b_Jet_drLep);
+//////
   tree->Branch("jet_partonFlavour", "std::vector<int>", &b_Jet_partonFlavour);
   tree->Branch("jet_hadronFlavour", "std::vector<int>", &b_Jet_hadronFlavour);
 
@@ -211,7 +225,6 @@ TtbarSingleLeptonAnalyzer::TtbarSingleLeptonAnalyzer(const edm::ParameterSet& iC
   tree->Branch("jet_shiftedEnDown",  "std::vector<float>", &b_Jet_shiftedEnDown);
 
   tree->Branch("jet_CSV" , "std::vector<float>", &b_Jet_CSV );
-
 
   EventInfo = fs->make<TH1F>("EventInfo","Event Information",5,0,5); 
   EventInfo->GetXaxis()->SetBinLabel(1,"Number of Events");
@@ -436,7 +449,10 @@ void TtbarSingleLeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::Eve
 
   Handle<cat::METCollection> MET;
   iEvent.getByToken(metToken_, MET);
-
+////
+  TLorentzVector met;
+  met.SetPtEtaPhiM(MET->begin()->pt(), 0, MET->begin()->phi() ,0);
+//
   // MET-PF
   b_MET     = MET->begin()->pt();
   b_MET_phi = MET->begin()->phi();
@@ -550,7 +566,8 @@ void TtbarSingleLeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::Eve
     b_Lepton_pz = lepton.Pz();
     b_Lepton_E  = lepton.E();
     b_Lepton_pT = lepton.Pt();
-
+ 
+    b_Wmass = (met + lepton).M();
     //---------------------------------------------------------------------------
     //---------------------------------------------------------------------------
     // Jets
@@ -600,6 +617,8 @@ void TtbarSingleLeptonAnalyzer::analyze(const edm::Event& iEvent, const edm::Eve
         b_Jet_CSV ->push_back(jet_btagDis_CSV);
 
       }
+    
+        b_Jet_drLep->push_back(dr_LepJet);
     }
 
     b_Jet_Number = N_GoodJets;
@@ -730,6 +749,7 @@ bool TtbarSingleLeptonAnalyzer::IsLooseElectron(const cat::Electron & i_electron
   return GoodElectron;
 
 }
+
 //define this as a plug-in
 DEFINE_FWK_MODULE(TtbarSingleLeptonAnalyzer);
 
