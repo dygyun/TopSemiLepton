@@ -40,15 +40,14 @@ void MyAnalysis::BuildEvent() {
    }
    //lepWn.SetXYZM(MCneutrino_px, MCneutrino_py, MCneutrino_pz, 0.0);
    mymet.SetXYZM(MET_Px, MET_Py, 0., 0.);
-   
 //EventWeight = PUWeight*GenWeight*weight_factor*norm_scale;
 
  //if(channel=0 && Semileptonic==0)  EventWeight=0.;
 //if(channel==0)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*Dileptonic; //for dileptonic
-if(channel==1)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*Semileptonic; //for semileptonic
-else if (channel== 0 && Semileptonic==0)  EventWeight=0.;
-//if(channel==2)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*( (Dileptonic+Semileptonic)==0) ; //for hadronic
-//if(channel==3)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale; //for all
+if      (channel==0)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*Dileptonic; //for dileptonic
+else if (channel==1)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*Semileptonic; //for semileptonic
+else if (channel==2)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*( (Dileptonic+Semileptonic)==0) ; //for hadronic
+else                    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale; //for all
 }
 
 void MyAnalysis::Begin(TTree * /*tree*/) {
@@ -61,6 +60,12 @@ void MyAnalysis::SlaveBegin(TTree * /*tree*/) {
    TString option = GetOption();
 
    for(int i=0; i < 5; i++){ 
+     h_GenWeight[i] = new TH1F(Form("h_GenWeight_S%i",i), "GenWeight", 10, -5, 5);
+     h_GenWeight[i]->SetXTitle("GenWeight");
+     h_GenWeight[i]->Sumw2();
+     histograms.push_back(h_GenWeight[i]);
+     histograms_MC.push_back(h_GenWeight[i]);
+
      h_NVertex[i] = new TH1F(Form("h_NVertex_S%i",i), "Number of vertex", 40 , 0, 40);
      h_NVertex[i]->SetXTitle("Number of Vertices");
      h_NVertex[i]->Sumw2();
@@ -184,6 +189,7 @@ Bool_t MyAnalysis::Process(Long64_t entry) {
    //step 0 
    if( NMuon > 0 )
     {
+     h_GenWeight[0]->Fill(GenWeight);
      h_MuonIso[0]->Fill(Muon_Iso[0], EventWeight);
      h_NMuon[0]->Fill(N_IsoMuon, EventWeight);
      h_NVertex[0]->Fill(NVertex, EventWeight);
