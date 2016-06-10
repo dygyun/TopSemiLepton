@@ -40,14 +40,16 @@ void MyAnalysis::BuildEvent() {
    }
    //lepWn.SetXYZM(MCneutrino_px, MCneutrino_py, MCneutrino_pz, 0.0);
    mymet.SetXYZM(MET_Px, MET_Py, 0., 0.);
-//EventWeight = PUWeight*GenWeight*weight_factor*norm_scale;
 
- //if(channel=0 && Semileptonic==0)  EventWeight=0.;
+  EventWeight = PUWeight*GenWeight*weight_factor*norm_scale;
+ //if(channel=0 && SemiLeptonic==0)  EventWeight=0.;
 //if(channel==0)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*Dileptonic; //for dileptonic
-if      (channel==0)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*Dileptonic; //for dileptonic
-else if (channel==1)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*Semileptonic; //for semileptonic
-else if (channel==2)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*( (Dileptonic+Semileptonic)==0) ; //for hadronic
-else                    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale; //for all
+/*
+if      (channel==0)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*(SemiLeptonic==0); //for dileptonic
+else if (channel==1)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*SemiLeptonic; //for semileptonic
+else if (channel==2)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*( (Dileptonic+SemiLeptonic)==0) ; //for hadronic
+else if (channel==3)     EventWeight = PUWeight*GenWeight*weight_factor*norm_scale; //for all
+*/
 }
 
 void MyAnalysis::Begin(TTree * /*tree*/) {
@@ -119,8 +121,6 @@ void MyAnalysis::SlaveBegin(TTree * /*tree*/) {
 }
 
 Bool_t MyAnalysis::Process(Long64_t entry) {
-//Bool_t MyAnalysis::Process(Long64_t entry, int channel) {
-   // The return value is currently not used.
    bool debug = false;
  
    ++TotalEvents;
@@ -129,7 +129,7 @@ Bool_t MyAnalysis::Process(Long64_t entry) {
 
    if (TotalEvents % 1000000 == 0)
       cout << "Next event -----> " << TotalEvents << endl;
-   
+ // if ((SemiLeptonic =1)  )  ;
  BuildEvent();
  //  BuildEvent(channel);
    double MuonPtCut = 30.;
@@ -186,8 +186,14 @@ Bool_t MyAnalysis::Process(Long64_t entry) {
 
    if( debug ) cout << "filling at step0..." << endl;
    //////////////////////////////
+  //if ( SemiLeptonic && channel==2 )   return kTRUE;
+ // if (( !SemiLeptonic ) && channel==1) return kTRUE;
+  if ( SemiLeptonic ==1  && channel==2 )   return kTRUE;
+  if (( !SemiLeptonic ==0 ) && channel==1) return kTRUE;
+
    //step 0 
-   if( NMuon > 0 )
+  //if( NMuon > 0 && (channel==3 || (channel==1 && SemiLeptonic ==1) || (channel==2 && SemiLeptonic==0)) ) 
+  if( NMuon > 0 ) 
     {
      h_GenWeight[0]->Fill(GenWeight);
      h_MuonIso[0]->Fill(Muon_Iso[0], EventWeight);
@@ -258,7 +264,9 @@ Bool_t MyAnalysis::Process(Long64_t entry) {
   } //step1
    if( debug ) cout << "ending event..." << endl; 
    return kTRUE;
-}// Loop
+ 
+     //  } //diveide other.root ttbar siggnal
+}//End of Events Loop
 
 void MyAnalysis::SlaveTerminate() {
    // The SlaveTerminate() function is called after all entries or objects
