@@ -41,37 +41,19 @@ int main() {
    TChain* ch = new TChain("TopTree/events");
    ch->Add(Form("%s/hep_data_json.root",dir.Data()), nevt);
    ch->Process(A);
-   A->setChannel(3);
+A->setChannel(3);
 //   ch2->Process("DiLeptonic==1",B);
    MyAnalysis *B = new MyAnalysis(1,1,831.8,lumi,hB->GetBinContent(1));
    TChain* ch2 = new TChain("TopTree/events");
    ch2->Add(Form("%s/hep_TT_powheg.root",dir.Data()), nevt);
    ch2->Process(B);
-   //ch2->Process(B,0);
-   B->setChannel(3);
+B->setChannel(2);
    //////
    MyAnalysis *Bsemi = new MyAnalysis(1,1,831.8,lumi,hB->GetBinContent(1));
    TChain* ch2semi = new TChain("TopTree/events");
    ch2semi->Add(Form("%s/hep_TT_powheg.root",dir.Data()), nevt);
    ch2semi->Process(Bsemi);
-   Bsemi->setChannel(3);
-/*
-   MyAnalysis *Bhad = new MyAnalysis(1,1,831.8,lumi,hB->GetBinContent(1));
-   TChain* ch2had= new TChain("TopTree/events");
-   ch2had->Add(Form("%s/hep_TT_powheg.root",dir.Data()), nevt);
-   ch2had->Process(Bhad);
-   Bhad->setChannel(3);
-
-   MyAnalysis *Ball= new MyAnalysis(1,1,831.8,lumi,hB->GetBinContent(1));
-   TChain* ch2all = new TChain("TopTree/events");
-   ch2all->Add(Form("%s/hep_TT_powheg.root",dir.Data()), nevt);
-   ch->Process(Ball);
-   Ball->setChannel(3);
-*/
-//Process (TSelector selector, Option_t option="", Long64_t nentries=kMaxEntries, Long64_t firstentry=0)
-// TSelector selector = new TSelector ; 
-// Process (TSelector selector, Option_t option="", Long64_t nentries=10000000, Long64_t firstentry=0)
-//  ch2->Process(selector,B);
+Bsemi->setChannel(1);
 ///////// 
    MyAnalysis *C = new MyAnalysis(1,1,61524,lumi,hC->GetBinContent(2));
    TChain* ch3 = new TChain("TopTree/events");
@@ -96,7 +78,7 @@ E->setChannel(3);
    ch6->Add(Form("%s/hep_SingleTop_t.root",dir.Data()),nevt);
    ch6->Process(I);
 I->setChannel(3);
-
+  
    MyAnalysis *J = new MyAnalysis(1,1,26.38,lumi,hJ->GetBinContent(1));
    TChain* ch7 = new TChain("TopTree/events");
    ch7->Add(Form("%s/hep_SingleTbar_t.root",dir.Data()),nevt);
@@ -156,9 +138,9 @@ Plotter P;
    P.AddBg(D->histograms, std::string("DY"));
    P.AddBg(I->histograms, std::string("Single Top"));
    P.AddBg(N->histograms, std::string("VV"));
-   P.AddBg(B->histograms, std::string("TTOthers"));
+  // P.AddBg(B->histograms, std::string("TTOthers"));
 
-   P.Plot(string("results_ttOther.pdf"));
+   P.Plot(string("results_TTbarOthers.pdf"));
 
    TFile * outA = TFile::Open("hist_data.root","RECREATE");
    for(int i=0; i < A->histograms.size(); i++){
@@ -176,32 +158,15 @@ Plotter P;
    outB->Write();
    outB->Close();
 
-   TFile * outBsemi = TFile::Open("hist_TT_Semi.root","RECREATE");
+   TFile * outBsemi = TFile::Open("hist_TT_powheg.root","RECREATE");
    for(int i=0; i < Bsemi->histograms.size(); i++){
      TH1F * tmp = (TH1F *) Bsemi->histograms[i];
      tmp->Write();
    }
    outBsemi->Write();
    outBsemi->Close();
-/*
-   TFile * outBhad= TFile::Open("hist_TT_Hadronic.root","RECREATE");
-   for(int i=0; i < Bhad->histograms.size(); i++){
-     TH1F * tmp = (TH1F *) Bhad->histograms[i];
-     tmp->Write();
-   }
-   outBhad->Write();
-   outBhad->Close();
-*/ 
-/* 
- TFile * outBall= TFile::Open("hist_TT_powheg.root","RECREATE");
-   for(int i=0; i < Ball->histograms.size(); i++){
-     TH1F * tmp = (TH1F *) Ball->histograms[i];
-     tmp->Write();
-   }
-   outBall->Write();
-   outBall->Close();
-*/
-   TFile * outC = TFile::Open("hist_WJets.root","RECREATE");
+   
+  TFile * outC = TFile::Open("hist_WJets.root","RECREATE");
    for(int i=0; i < C->histograms.size(); i++){
      TH1F * tmp = (TH1F *) C->histograms[i];
      tmp->Write();
