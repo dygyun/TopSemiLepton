@@ -192,7 +192,7 @@ Bool_t MyAnalysis::Process(Long64_t entry, int channel) {
 
 if ( SemiLeptonic  ) channel=2   ;// return kTRUE;
 if ( !SemiLeptonic ) channel=1   ; //return kTRUE;
-// if ( SemiLeptonic ==1) channel = 1; //by seungkyu
+// if ( SemiLeptonic ==1) channel = 1; //
 // if ( SemiLeptonic ==0) channel = 2; //
  else channel = 3; //
 
