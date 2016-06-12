@@ -97,14 +97,14 @@ public:
    Int_t NPrimaryVertices;
    //Bool_t triggerIsoMu24;
    Int_t NVertex;
-   Int_t Dileptonic;
-   Int_t Semileptonic;
+   Int_t DiLeptonic;
+   Int_t SemiLeptonic;
    Float_t PUWeight;
    Float_t GenWeight;
    
    // List of branches
-   TBranch *b_Dileptonic;
-   TBranch *b_Semileptonic; //! 
+   TBranch *b_DiLeptonic;
+   TBranch *b_SemiLeptonic; //! 
    TBranch *b_NBJet; //!
    TBranch *b_NJet; //!
    TBranch *b_Jet_Pt; //!
@@ -184,15 +184,15 @@ public:
    TBranch *b_PUWeight; //!
    TBranch *b_GenWeight; //!
   
-void setChannel(int channel_) { channel=channel_;}
+//void setChannel(int channel_) { channel=channel_;}
  
- MyAnalysis(float sf = 1., float wf = 1, float Xsection = 1.0 , float lumi = 1.0, float num = 1.0, TTree * /*tree*/= 0) :
- // MyAnalysis(float sf = 1., float wf = 1, float Xsection = 1.0 , float lumi = 1.0, float num = 1.0, TTree * =0, int channel_) :
+// MyAnalysis(float sf = 1., float wf = 1, float Xsection = 1.0 , float lumi = 1.0, float num = 1.0, TTree * /*tree*/= 0) :
+MyAnalysis(float sf = 1., float wf = 1, float Xsection = 1.0 , float lumi = 1.0, float num = 1.0, TTree * =0, int channel_) :
    fChain(0) {
       weight_factor = wf;
       norm_scale = lumi/(num/Xsection);
       SF_b = sf;
-     // channel = channel_; 
+     Channel = channel_; 
    }
 
    virtual ~MyAnalysis() {
@@ -204,8 +204,8 @@ void setChannel(int channel_) { channel=channel_;}
    virtual void SlaveBegin(TTree *tree);
    virtual void Init(TTree *tree);
    virtual Bool_t Notify();
-  // virtual Bool_t Process(Long64_t entry, int channel);
-  virtual Bool_t Process(Long64_t entry);
+  virtual Bool_t Process(Long64_t entry, int channel);
+  //virtual Bool_t Process(Long64_t entry);
    virtual Int_t GetEntry(Long64_t entry, Int_t getall = 0) {
       return fChain ? fChain->GetTree()->GetEntry(entry, getall) : 0;
    }
@@ -224,8 +224,8 @@ void setChannel(int channel_) { channel=channel_;}
    virtual void SlaveTerminate();
    virtual void Terminate();
    
-  //void BuildEvent(int channel);
-  void BuildEvent();
+  void BuildEvent(int channel);
+ // void BuildEvent();
   
    float EventWeight; 
    int TotalEvents;
@@ -240,8 +240,9 @@ void setChannel(int channel_) { channel=channel_;}
    float weight_factor;
    float norm_scale;
    float SF_b;
-  // int channel;
+  int Channel;
  
+   TH1F *h_GenWeight[5];
    TH1F *h_Muon_Pt[5];
    TH1F *h_NMuon[5];
    TH1F *h_MuonIso[5];
@@ -277,8 +278,8 @@ void MyAnalysis::Init(TTree *tree)
    fChain = tree;
    fChain->SetMakeClass(1);
    
-   fChain->SetBranchAddress("Dileptonic", &Dileptonic, &b_Dileptonic);
-   fChain->SetBranchAddress("Semileptonic", &Semileptonic, &b_Semileptonic);
+   fChain->SetBranchAddress("DiLeptonic", &DiLeptonic, &b_DiLeptonic);
+   fChain->SetBranchAddress("SemiLeptonic", &SemiLeptonic, &b_SemiLeptonic);
    fChain->SetBranchAddress("NBJet", &NBJet, &b_NBJet);
    fChain->SetBranchAddress("NJet", &NJet, &b_NJet);
    fChain->SetBranchAddress("Jet_Pt", Jet_Pt, &b_Jet_Pt);

@@ -5,8 +5,8 @@
 #include <TH1F.h>
 #include <TLatex.h>
 using namespace std;
-void MyAnalysis::BuildEvent() {
-//void MyAnalysis::BuildEvent(int channel) {
+//void MyAnalysis::BuildEvent() {
+void MyAnalysis::BuildEvent(int channel) {
    
    Muons.clear();
    for (int i = 0; i < NMuon; ++i) {
@@ -43,15 +43,11 @@ void MyAnalysis::BuildEvent() {
 
   EventWeight = PUWeight*GenWeight*weight_factor*norm_scale;
  //if(channel=0 && SemiLeptonic==0)  EventWeight=0.;
-//if(channel==0)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*Dileptonic; //for dileptonic
 /*
 if      (channel==0)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*(SemiLeptonic==0); //for dileptonic
-else if (channel==1)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*SemiLeptonic; //for semileptonic
 else if (channel==2)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*( (Dileptonic+SemiLeptonic)==0) ; //for hadronic
-else if (channel==3)     EventWeight = PUWeight*GenWeight*weight_factor*norm_scale; //for all
 */
 }
-
 void MyAnalysis::Begin(TTree * /*tree*/) {
    // The tree argument is deprecated (on PROOF 0 is passed).
    TString option = GetOption();
@@ -120,7 +116,8 @@ void MyAnalysis::SlaveBegin(TTree * /*tree*/) {
 
 }
 
-Bool_t MyAnalysis::Process(Long64_t entry) {
+//Bool_t MyAnalysis::Process(Long64_t entry) {
+Bool_t MyAnalysis::Process(Long64_t entry, int channel) {
    bool debug = false;
  
    ++TotalEvents;
@@ -129,9 +126,13 @@ Bool_t MyAnalysis::Process(Long64_t entry) {
 
    if (TotalEvents % 1000000 == 0)
       cout << "Next event -----> " << TotalEvents << endl;
- // if ((SemiLeptonic =1)  )  ;
- BuildEvent();
- //  BuildEvent(channel);
+ //  cout << " SemiLeptonic ? : " << SemiLeptonic << endl;
+//  if ((SemiLeptonic == 1)  )  ;
+ // if ( !SemiLeptonic ) 
+ //if ( SemiLeptonic  ) channel=2   ;// return kTRUE;
+// if ( !SemiLeptonic ) channel=1   ; //return kTRUE;
+ //BuildEvent();
+ BuildEvent(channel);
    double MuonPtCut = 30.;
    double MuonEtaCut = 30.;
    double MuonRelIsoCut = 0.12;
@@ -186,10 +187,14 @@ Bool_t MyAnalysis::Process(Long64_t entry) {
 
    if( debug ) cout << "filling at step0..." << endl;
    //////////////////////////////
-  //if ( SemiLeptonic && channel==2 )   return kTRUE;
- // if (( !SemiLeptonic ) && channel==1) return kTRUE;
-  if ( SemiLeptonic ==1  && channel==2 )   return kTRUE;
-  if (( !SemiLeptonic ==0 ) && channel==1) return kTRUE;
+// if ( SemiLeptonic ==0  && channel==2) return kTRUE; //channle =2 others
+// if ( SemiLeptonic ==1  && channel==1) return kTRUE; //channel = 1 signal
+
+if ( SemiLeptonic  ) channel=2   ;// return kTRUE;
+if ( !SemiLeptonic ) channel=1   ; //return kTRUE;
+// if ( SemiLeptonic ==1) channel = 1; //by seungkyu
+// if ( SemiLeptonic ==0) channel = 2; //
+ else channel = 3; //
 
    //step 0 
   //if( NMuon > 0 && (channel==3 || (channel==1 && SemiLeptonic ==1) || (channel==2 && SemiLeptonic==0)) ) 
