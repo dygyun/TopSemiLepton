@@ -43,79 +43,66 @@ int main() {
    TChain* ch = new TChain("TopTree/events");
    ch->Add(Form("%s/hep_data_json.root",dir.Data()), nevt);
    ch->Process(A);
-//A->setChannel(3);
-//   ch2->Process("DiLeptonic==1",B);
-   MyAnalysis *B = new MyAnalysis(1,1,831.8,lumi,hB->GetBinContent(1));
+   
+   MyAnalysis_others *B = new MyAnalysis_others(1,1,831.8,lumi,hB->GetBinContent(1));
    TChain* ch2 = new TChain("TopTree/events");
    ch2->Add(Form("%s/hep_TT_powheg.root",dir.Data()), nevt);
    ch2->Process(B);
-//B->setChannel(2);
    //////
-   MyAnalysis *Bsemi = new MyAnalysis(1,1,831.8,lumi,hBsemi->GetBinContent(1));
+   MyAnalysis_Sig *Bsemi = new MyAnalysis_Sig(1,1,831.8,lumi,hBsemi->GetBinContent(1));
    TChain* ch2semi = new TChain("TopTree/events");
    ch2semi->Add(Form("%s/hep_TT_powheg.root",dir.Data()), nevt);
-   ch2semi->Process(Bsemi);
-//Bsemi->setChannel(1);
+ch2semi->Process(Bsemi);
 ///////// 
    MyAnalysis *C = new MyAnalysis(1,1,61524,lumi,hC->GetBinContent(2));
    TChain* ch3 = new TChain("TopTree/events");
    ch3->Add(Form("%s/hep_WJets.root",dir.Data()),nevt);
    ch3->Process(C);
-//C->setChannel(3);
    
    MyAnalysis *D = new MyAnalysis(1,1,6025.2,lumi,hD->GetBinContent(1));
    TChain* ch4 = new TChain("TopTree/events");
    ch4->Add(Form("%s/hep_DYJets.root",dir.Data()),nevt);
    ch4->Process(D);
-//D->setChannel(3);
   
    MyAnalysis *E = new MyAnalysis(1,1,18610.0,lumi,hE->GetBinContent(1));
    TChain* ch5 = new TChain("TopTree/events");
    ch5->Add(Form("%s/hep_DYJets_10to50.root",dir.Data()),nevt);
    ch5->Process(E);
-//E->setChannel(3);
  
    MyAnalysis *I = new MyAnalysis(1,1,44.33,lumi,hI->GetBinContent(1));
    TChain* ch6 = new TChain("TopTree/events");
    ch6->Add(Form("%s/hep_SingleTop_t.root",dir.Data()),nevt);
    ch6->Process(I);
-//I->setChannel(3);
   
    MyAnalysis *J = new MyAnalysis(1,1,26.38,lumi,hJ->GetBinContent(1));
    TChain* ch7 = new TChain("TopTree/events");
    ch7->Add(Form("%s/hep_SingleTbar_t.root",dir.Data()),nevt);
    ch7->Process(J);
-//J->setChannel(3);
 
    MyAnalysis *K = new MyAnalysis(1,1,35.6,lumi,hK->GetBinContent(1));
    TChain* ch8 = new TChain("TopTree/events");
    ch8->Add(Form("%s/hep_SingleTop_tW.root",dir.Data()),nevt);
    ch8->Process(K);
-//K->setChannel(3);
 
    MyAnalysis *L = new MyAnalysis(1,1,35.6,lumi,hL->GetBinContent(1));
    TChain* ch9 = new TChain("TopTree/events");
    ch9->Add(Form("%s/hep_SingleTbar_tW.root",dir.Data()),nevt);
    ch9->Process(L);
-//L->setChannel(3);
    
    MyAnalysis *N = new MyAnalysis(1,1,118.7,lumi,hN->GetBinContent(1));
    TChain* ch10 = new TChain("TopTree/events");
    ch10->Add(Form("%s/hep_WW.root",dir.Data()),nevt);
    ch10->Process(N);
-//N->setChannel(3);
 
    MyAnalysis *O = new MyAnalysis(1,1,47.13,lumi,hO->GetBinContent(1));
    TChain* ch11 = new TChain("TopTree/events");
    ch11->Add(Form("%s/hep_WZ.root",dir.Data()),nevt);
    ch11->Process(O);
-//O->setChannel(3);
    
    MyAnalysis *M = new MyAnalysis(1,1,16.523,lumi,hM->GetBinContent(1));
    TChain* ch12 = new TChain("TopTree/events");
    ch12->Add(Form("%s/hep_ZZ.root",dir.Data()),nevt);
    ch12->Process(M);
-//M->setChannel(3);
  
 Plotter P;
 

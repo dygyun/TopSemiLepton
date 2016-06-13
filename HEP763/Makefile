@@ -12,14 +12,16 @@ LFLAGS =
 RCXX=$(CFLAGS) $(ROOTCFLAGS)
 RLXX=$(LFLAGS) $(ROOTLIBS)
 
-SRC1= MyAnalysis.o MyJet.o MyMuon.o MyElectron.o MyPhoton.o Plotter.o
+SRC1= MyAnalysis.o MyAnalysis_Sig.o MyAnalysis_others.o MyJet.o MyMuon.o MyElectron.o MyPhoton.o Plotter.o
+#SRC1= MyAnalysis.o MyJet.o MyMuon.o MyElectron.o MyPhoton.o Plotter.o
 
 %.o: %.C %.h
 		$(C) $(RCXX) -c $<
 
 all: example
 
-example.o: example.C MyAnalysis.h
+example.o: example.C MyAnalysis.h MyAnalysis_Sig.h MyAnalysis_others.h
+#example.o: example.C MyAnalysis.h
 		$(C) $(RCXX) -c $<
 
 example: $(SRC1) example.o
