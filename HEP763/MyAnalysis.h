@@ -6,6 +6,9 @@
 #include <TChain.h>
 #include <TSelector.h>
 #include <TH1F.h>
+#include <TH1D.h>
+#include <TH2F.h>
+#include <TH2D.h>
 #include <TLorentzVector.h>
 #include <vector>
 
@@ -14,7 +17,6 @@
 #include "MyElectron.h"
 #include "MyPhoton.h"
 #include <iostream>
-
 using namespace std;
 // Header file for the classes stored in the TTree if any.
 // Fixed size dimensions of array or collections stored in the TTree if any.
@@ -22,7 +24,6 @@ class MyAnalysis: public TSelector {
 public:
    TTree *fChain; //!pointer to the analyzed TTree or TChain
    // Declaration of leaf types
-   Int_t channel;
    Int_t NBJet;
    Int_t NJet;
    Float_t Jet_Pt[10]; //[NJet]
@@ -183,16 +184,12 @@ public:
    TBranch *b_NVertex; //!
    TBranch *b_PUWeight; //!
    TBranch *b_GenWeight; //!
-  
-//void setChannel(int channel_) { channel=channel_;}
- 
-// MyAnalysis(float sf = 1., float wf = 1, float Xsection = 1.0 , float lumi = 1.0, float num = 1.0, TTree * /*tree*/= 0) :
-MyAnalysis(float sf = 1., float wf = 1, float Xsection = 1.0 , float lumi = 1.0, float num = 1.0, TTree * =0, int channel_) :
+   
+   MyAnalysis(float sf = 1., float wf = 1, float Xsection = 1.0 , float lumi = 1.0, float num = 1.0, TTree * /*tree*/= 0) :
    fChain(0) {
       weight_factor = wf;
       norm_scale = lumi/(num/Xsection);
       SF_b = sf;
-     Channel = channel_; 
    }
 
    virtual ~MyAnalysis() {
@@ -204,8 +201,7 @@ MyAnalysis(float sf = 1., float wf = 1, float Xsection = 1.0 , float lumi = 1.0,
    virtual void SlaveBegin(TTree *tree);
    virtual void Init(TTree *tree);
    virtual Bool_t Notify();
-  virtual Bool_t Process(Long64_t entry, int channel);
-  //virtual Bool_t Process(Long64_t entry);
+   virtual Bool_t Process(Long64_t entry);
    virtual Int_t GetEntry(Long64_t entry, Int_t getall = 0) {
       return fChain ? fChain->GetTree()->GetEntry(entry, getall) : 0;
    }
@@ -224,8 +220,7 @@ MyAnalysis(float sf = 1., float wf = 1, float Xsection = 1.0 , float lumi = 1.0,
    virtual void SlaveTerminate();
    virtual void Terminate();
    
-  void BuildEvent(int channel);
- // void BuildEvent();
+   void BuildEvent();
   
    float EventWeight; 
    int TotalEvents;
@@ -240,9 +235,7 @@ MyAnalysis(float sf = 1., float wf = 1, float Xsection = 1.0 , float lumi = 1.0,
    float weight_factor;
    float norm_scale;
    float SF_b;
-  int Channel;
  
-   TH1F *h_GenWeight[5];
    TH1F *h_Muon_Pt[5];
    TH1F *h_NMuon[5];
    TH1F *h_MuonIso[5];
@@ -252,20 +245,12 @@ MyAnalysis(float sf = 1., float wf = 1, float Xsection = 1.0 , float lumi = 1.0,
    TH1F *h_NJet[5]; 
    TH1F *h_NBJet[5]; 
    TH1F *h_MET[5]; 
-/*
-   TH1F *h_Mmumu[4];
-   TH1F *h_NMuon[4];
-   TH1F *h_MuonIso[4];
-   TH1F *h_NVertex[4];
-   TH1F *h_WMuon_MT[4];
-   TH1F *h_WMuon_Phi[4];
-   TH1F *h_NJet[4]; 
-   TH1F *h_NBJet[4]; 
-   TH1F *h_MET[4]; 
-  */
+   TH2D *hIso_vs_MET[5]; 
+
    vector<TH1F*> histograms;
    vector<TH1F*> histograms_MC;
-   
+   vector<TH2D*> histograms_2D;  
+   vector<TH2D*> histograms_MC_2D;  
 };
 
 #endif
@@ -317,7 +302,6 @@ void MyAnalysis::Init(TTree *tree)
    fChain->SetBranchAddress("LooseElectron_E", LooseElectron_E, &b_LooseElectron_E);
    fChain->SetBranchAddress("LooseElectron_Charge", LooseElectron_Charge, &b_LooseElectron_Charge);
    fChain->SetBranchAddress("LooseElectron_Iso", LooseElectron_Iso, &b_LooseElectron_Iso);
-   
 
    fChain->SetBranchAddress("MET", &MET, &b_MET);
    fChain->SetBranchAddress("MET_Px", &MET_Px, &b_MET_Px);
@@ -327,16 +311,17 @@ void MyAnalysis::Init(TTree *tree)
    fChain->SetBranchAddress("WMuon_Phi", &WMuon_Phi, &b_WMuon_Phi);
    fChain->SetBranchAddress("WElectron_MT", &WElectron_MT, &b_WElectron_MT);
    fChain->SetBranchAddress("WElectron_Phi", &WElectron_Phi, &b_WElectron_Phi);
-
+ //  fChain->SetBranchAddress("triggerIsoMu24", &triggerIsoMu24, &b_triggerIsoMu24);
    fChain->SetBranchAddress("NVertex", &NVertex, &b_NVertex);
    fChain->SetBranchAddress("PUWeight", &PUWeight, &b_PUWeight);
    fChain->SetBranchAddress("GenWeight", &GenWeight, &b_GenWeight);
    
    TotalEvents = 0;
-   EventWeight = 1.0; } 
+   EventWeight = 1.0;
+}
+
 Bool_t MyAnalysis::Notify()
 {
    return kTRUE;
 }
-
 #endif // #ifdef MyAnalysis_cxx

@@ -1,12 +1,13 @@
 #define MyAnalysis_cxx
-// Root > T->Process("MyAnalysis.C+")
 #include "MyAnalysis.h"
 #include <iostream>
 #include <TH1F.h>
+#include <TH1D.h>
+#include <TH2D.h>
+#include <TH2F.h>
 #include <TLatex.h>
 using namespace std;
-//void MyAnalysis::BuildEvent() {
-void MyAnalysis::BuildEvent(int channel) {
+void MyAnalysis::BuildEvent() {
    
    Muons.clear();
    for (int i = 0; i < NMuon; ++i) {
@@ -38,52 +39,53 @@ void MyAnalysis::BuildEvent(int channel) {
       //jet.SetJetID(Jet_ID[i]);
       Jets.push_back(jet);
    }
-   //lepWn.SetXYZM(MCneutrino_px, MCneutrino_py, MCneutrino_pz, 0.0);
    mymet.SetXYZM(MET_Px, MET_Py, 0., 0.);
-
-  EventWeight = PUWeight*GenWeight*weight_factor*norm_scale;
- //if(channel=0 && SemiLeptonic==0)  EventWeight=0.;
-/*
-if      (channel==0)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*(SemiLeptonic==0); //for dileptonic
-else if (channel==2)    EventWeight = PUWeight*GenWeight*weight_factor*norm_scale*( (Dileptonic+SemiLeptonic)==0) ; //for hadronic
-*/
+   
+   EventWeight = PUWeight*GenWeight*weight_factor*norm_scale;
 }
+
 void MyAnalysis::Begin(TTree * /*tree*/) {
    // The tree argument is deprecated (on PROOF 0 is passed).
    TString option = GetOption();
 }
 
 void MyAnalysis::SlaveBegin(TTree * /*tree*/) {
-   // The tree argument is deprecated (on PROOF 0 is passed).
+   // The SlaveBegin() function is called after the Begin() function.
    TString option = GetOption();
 
    for(int i=0; i < 5; i++){ 
-     h_GenWeight[i] = new TH1F(Form("h_GenWeight_S%i",i), "GenWeight", 10, -5, 5);
-     h_GenWeight[i]->SetXTitle("GenWeight");
-     h_GenWeight[i]->Sumw2();
-     histograms.push_back(h_GenWeight[i]);
-     histograms_MC.push_back(h_GenWeight[i]);
-
-     h_NVertex[i] = new TH1F(Form("h_NVertex_S%i",i), "Number of vertex", 40 , 0, 40);
+     hIso_vs_MET[i] = new TH2D(Form("hIso_vs_MET%i",i), "PF Isolation vs {#slash{E}_{T}}", 50 , 0, 200 , 100, 0 , 2.0 );
+     hIso_vs_MET[i]->SetXTitle("#slash{E}_{T} [GeV]");
+     hIso_vs_MET[i]->Sumw2();
+     histograms_2D.push_back(hIso_vs_MET[i]);
+     histograms_MC_2D.push_back(hIso_vs_MET[i]);
+////
+     h_Muon_Pt[i] = new TH1F(Form("h_Muon_Pt_S%i",i), "Muon Pt", 40, 0, 200);
+     h_Muon_Pt[i]->SetXTitle("Muon Pt [GeV]");
+     h_Muon_Pt[i]->Sumw2();
+     histograms.push_back(h_Muon_Pt[i]);
+     histograms_MC.push_back(h_Muon_Pt[i]);
+    ///// 
+     h_NVertex[i] = new TH1F(Form("h_NVertex_S%i",i), "Number of Vertex", 40 , 0, 40);
      h_NVertex[i]->SetXTitle("Number of Vertices");
      h_NVertex[i]->Sumw2();
      histograms.push_back(h_NVertex[i]);
      histograms_MC.push_back(h_NVertex[i]);
     
-     h_NMuon[i] = new TH1F(Form("h_NMuon_S%i",i), "Number of muons", 7, 0, 7);
+     h_NMuon[i] = new TH1F(Form("h_NMuon_S%i",i), "Number of Muons", 7, 0, 7);
      h_NMuon[i]->SetXTitle("Number of Muons");
      h_NMuon[i]->Sumw2();
      histograms.push_back(h_NMuon[i]);
      histograms_MC.push_back(h_NMuon[i]);
- 
+     //
      h_MuonIso[i] = new TH1F(Form("h_MuonIso_S%i",i), "Rel Iso", 40, 0, 0.2);
-     h_MuonIso[i]->SetXTitle("Rel Iso");
+     h_MuonIso[i]->SetXTitle("Rel Isolation");
      h_MuonIso[i]->Sumw2();
      histograms.push_back(h_MuonIso[i]);
      histograms_MC.push_back(h_MuonIso[i]);
  
      h_WMuon_MT[i] = new TH1F(Form("h_WMuon_MT_S%i",i), "Transverse mass", 50, 0, 200);
-     h_WMuon_MT[i]->SetXTitle("MT(Gev)");
+     h_WMuon_MT[i]->SetXTitle("MT [GeV]");
      h_WMuon_MT[i]->Sumw2();
      histograms.push_back(h_WMuon_MT[i]);
      histograms_MC.push_back(h_WMuon_MT[i]);
@@ -94,20 +96,20 @@ void MyAnalysis::SlaveBegin(TTree * /*tree*/) {
      histograms.push_back(h_WMuon_Phi[i]);
      histograms_MC.push_back(h_WMuon_Phi[i]);
 
-     h_NJet[i] = new TH1F(Form("h_NJet_S%i",i), "Number of jets", 14, 0, 14);
-     h_NJet[i]->SetXTitle("Number of Jets");
+     h_NJet[i] = new TH1F(Form("h_NJet_S%i",i), "Jet Multiplicity", 14, 0, 14);
+     h_NJet[i]->SetXTitle("Jet Multiplicity");
      h_NJet[i]->Sumw2();
      histograms.push_back(h_NJet[i]);
      histograms_MC.push_back(h_NJet[i]);
 
-     h_NBJet[i] = new TH1F(Form("h_NBJet_S%i",i), "Number of b tagged jets", 5, 0, 5);
-     h_NBJet[i]->SetXTitle("Number of b Jets");
+     h_NBJet[i] = new TH1F(Form("h_NBJet_S%i",i), "b tagged Jet Multiplicity", 5, 0, 5);
+     h_NBJet[i]->SetXTitle("CSVv2M  b-tagged Jet Multiplicity");
      h_NBJet[i]->Sumw2();
      histograms.push_back(h_NBJet[i]);
      histograms_MC.push_back(h_NBJet[i]);
 
      h_MET[i] = new TH1F(Form("h_MET_S%i",i), "MET", 40, 0, 200);
-     h_MET[i]->SetXTitle("MET");
+     h_MET[i]->SetXTitle("#slash{E}_{T} [GeV]");
      h_MET[i]->Sumw2();
      histograms.push_back(h_MET[i]);
      histograms_MC.push_back(h_MET[i]);
@@ -116,8 +118,8 @@ void MyAnalysis::SlaveBegin(TTree * /*tree*/) {
 
 }
 
-//Bool_t MyAnalysis::Process(Long64_t entry) {
-Bool_t MyAnalysis::Process(Long64_t entry, int channel) {
+Bool_t MyAnalysis::Process(Long64_t entry) {
+   // The return value is currently not used.
    bool debug = false;
  
    ++TotalEvents;
@@ -126,22 +128,14 @@ Bool_t MyAnalysis::Process(Long64_t entry, int channel) {
 
    if (TotalEvents % 1000000 == 0)
       cout << "Next event -----> " << TotalEvents << endl;
- //  cout << " SemiLeptonic ? : " << SemiLeptonic << endl;
-//  if ((SemiLeptonic == 1)  )  ;
- // if ( !SemiLeptonic ) 
- //if ( SemiLeptonic  ) channel=2   ;// return kTRUE;
-// if ( !SemiLeptonic ) channel=1   ; //return kTRUE;
- //BuildEvent();
- BuildEvent(channel);
-   double MuonPtCut = 30.;
+   
+   BuildEvent();
+   double Muon_PtCut = 30.;
    double MuonEtaCut = 30.;
    double MuonRelIsoCut = 0.12;
    double ElectronPtCut = 30.;
    double ElectronEtaCut = 30.;
    double ElectronRelIsoCut = 0.12;
-   //   for (vector<MyJet>::iterator it = Jets.begin(); it != Jets.end(); ++it) {
-   //      cout << "pt, eta, phi, btag, id: " << it->Pt() << ", " << it->Eta() << ", " << it->Phi() << ", " << it->IsBTagged() << ", " << it->GetJetID() //      << endl;
-   //   }
    int N_IsoMuon = 0;
 
    int sel_mu = 0;
@@ -156,8 +150,7 @@ Bool_t MyAnalysis::Process(Long64_t entry, int channel) {
          sel_mu = imu; 
        }
        if( N_IsoMuon == 2 ) muon2 = &(*jt); 
-     
-      }
+     }
      imu++;
    }
 
@@ -187,20 +180,11 @@ Bool_t MyAnalysis::Process(Long64_t entry, int channel) {
 
    if( debug ) cout << "filling at step0..." << endl;
    //////////////////////////////
-// if ( SemiLeptonic ==0  && channel==2) return kTRUE; //channle =2 others
-// if ( SemiLeptonic ==1  && channel==1) return kTRUE; //channel = 1 signal
-
-if ( SemiLeptonic  ) channel=2   ;// return kTRUE;
-if ( !SemiLeptonic ) channel=1   ; //return kTRUE;
-// if ( SemiLeptonic ==1) channel = 1; //
-// if ( SemiLeptonic ==0) channel = 2; //
- else channel = 3; //
-
    //step 0 
-  //if( NMuon > 0 && (channel==3 || (channel==1 && SemiLeptonic ==1) || (channel==2 && SemiLeptonic==0)) ) 
-  if( NMuon > 0 ) 
+   if( NMuon > 0 )
     {
-     h_GenWeight[0]->Fill(GenWeight);
+     hIso_vs_MET[0]->Fill(MET, Muon_Iso[0], EventWeight);
+     h_Muon_Pt[0]->Fill(Muon_Pt[sel_mu], EventWeight);
      h_MuonIso[0]->Fill(Muon_Iso[0], EventWeight);
      h_NMuon[0]->Fill(N_IsoMuon, EventWeight);
      h_NVertex[0]->Fill(NVertex, EventWeight);
@@ -212,9 +196,10 @@ if ( !SemiLeptonic ) channel=1   ; //return kTRUE;
     }
 
    if( debug ) cout << "filling at step1..." << endl;
-   if(N_IsoMuon == 1 && N_VetoElectron == 0 && MuonPtCut )
+   if( NMuon == 1 && N_VetoElectron == 0 && Muon_PtCut )
      { //step 1
-  
+     hIso_vs_MET[1]->Fill(MET, Muon_Iso[sel_mu], EventWeight);
+     h_Muon_Pt[1]->Fill(Muon_Pt[sel_mu], EventWeight);
      h_MuonIso[1]->Fill(Muon_Iso[sel_mu], EventWeight); 
      h_NMuon[1]->Fill(N_IsoMuon, EventWeight);
      h_NVertex[1]->Fill(NVertex, EventWeight);
@@ -223,11 +208,11 @@ if ( !SemiLeptonic ) channel=1   ; //return kTRUE;
      h_NJet[1]->Fill(NJet, EventWeight);
      h_NBJet[1]->Fill(NBJet, EventWeight); 
      h_MET[1]->Fill(MET, EventWeight);
-     
-//if (N_IsoMuon > 1 ) h_Mmumu[1]->Fill((*muon1 + *muon2).M(), EventWeight);
      if( debug ) cout << "filling at step2..." << endl;
      if( NJet > 3)
      { //step 2
+       hIso_vs_MET[2]->Fill(MET, Muon_Iso[sel_mu], EventWeight);
+       h_Muon_Pt[2]->Fill(Muon_Pt[sel_mu], EventWeight);
        h_MuonIso[2]->Fill(Muon_Iso[sel_mu], EventWeight); 
        h_NMuon[2]->Fill(N_IsoMuon, EventWeight);
        h_NVertex[2]->Fill(NVertex, EventWeight);
@@ -240,6 +225,8 @@ if ( !SemiLeptonic ) channel=1   ; //return kTRUE;
 //////steop3 MET
      if( debug ) cout << "filling at step3..." << endl;
      if( MET > 30){ //step 2
+         hIso_vs_MET[3]->Fill(MET, Muon_Iso[sel_mu], EventWeight);
+         h_Muon_Pt[3]->Fill(Muon_Pt[sel_mu], EventWeight);
          h_MuonIso[3]->Fill(Muon_Iso[sel_mu], EventWeight); 
          h_NMuon[3]->Fill(N_IsoMuon, EventWeight);
          h_NVertex[3]->Fill(NVertex, EventWeight);
@@ -251,31 +238,30 @@ if ( !SemiLeptonic ) channel=1   ; //return kTRUE;
        
     if( debug ) cout << "filling at step4..." << endl;
 
-       if( NBJet > 1 )
-       { //step 4
-       h_MuonIso[4]->Fill(Muon_Iso[sel_mu], EventWeight); 
-       h_NMuon[4]->Fill(N_IsoMuon, EventWeight);
-       h_NVertex[4]->Fill(NVertex, EventWeight);
-       h_WMuon_MT[4]->Fill( WMuon_MT[sel_mu], EventWeight);
-       h_WMuon_Phi[4]->Fill( WMuon_Phi[sel_mu], EventWeight);
-       h_NJet[4]->Fill(NJet, EventWeight);
-       h_NBJet[4]->Fill(NBJet, EventWeight);
-       h_MET[4]->Fill(MET, EventWeight);
-       }// step4 
-     
-      } //step3
+  if( NBJet > 1 )
+     { //step 4
+         hIso_vs_MET[4]->Fill(MET, Muon_Iso[sel_mu], EventWeight);
+         h_Muon_Pt[4]->Fill(Muon_Pt[sel_mu], EventWeight);
+         h_MuonIso[4]->Fill(Muon_Iso[sel_mu], EventWeight); 
+         h_NMuon[4]->Fill(N_IsoMuon, EventWeight);
+         h_NVertex[4]->Fill(NVertex, EventWeight);
+         h_WMuon_MT[4]->Fill( WMuon_MT[sel_mu], EventWeight);
+         h_WMuon_Phi[4]->Fill( WMuon_Phi[sel_mu], EventWeight);
+         h_NJet[4]->Fill(NJet, EventWeight);
+         h_NBJet[4]->Fill(NBJet, EventWeight);
+         h_MET[4]->Fill(MET, EventWeight);
+      } //step4
   
-     }//step2
+     }//step3
+    }//step2
   } //step1
    if( debug ) cout << "ending event..." << endl; 
    return kTRUE;
- 
-     //  } //diveide other.root ttbar siggnal
-}//End of Events Loop
+}
 
 void MyAnalysis::SlaveTerminate() {
    // The SlaveTerminate() function is called after all entries or objects
 }
 void MyAnalysis::Terminate() {
-   // the results graphically or save the results to file.
+   // The Terminate() function is the last function to be called during
 }

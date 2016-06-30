@@ -1,4 +1,6 @@
 #include "MyAnalysis.h"
+#include "MyAnalysis_Sig.h"
+#include "MyAnalysis_others.h"
 #include "Plotter.h"
 #include <iostream>
 #include <TChain.h>
@@ -22,8 +24,10 @@ int main() {
    TFile * fN = TFile::Open(dir+"/hep_WW.root");
    TFile * fO = TFile::Open(dir+"/hep_WZ.root");
    TFile * fM = TFile::Open(dir+"/hep_ZZ.root");
-//   TFile * fP = TFile::Open(dir+"/hep_qcd.root");
-   
+   TFile * fP = TFile::Open(dir+"/hep_30to50_MuEnriched.root");
+   TFile * fQ = TFile::Open(dir+"/hep_20to30_MuEnriched.root");
+//   TTree *inTree = (TTree*) fP->Get(“MyTree”); 
+ 
    TH1F * hBsemi = (TH1F*) fA->Get("TopTree/EventSummary");
    TH1F * hB = (TH1F*) fB->Get("TopTree/EventSummary");
    TH1F * hC = (TH1F*) fC->Get("TopTree/EventSummary");
@@ -36,7 +40,8 @@ int main() {
    TH1F * hN = (TH1F*) fN->Get("TopTree/EventSummary");
    TH1F * hO = (TH1F*) fO->Get("TopTree/EventSummary");
    TH1F * hM = (TH1F*) fM->Get("TopTree/EventSummary");
- //  TH1F * hP = (TH1F*) fP->Get("");
+   TH1F * hP = (TH1F*) fP->Get("TopTree/EventSummary");
+   TH1F * hQ = (TH1F*) fQ->Get("TopTree/EventSummary");
    int nevt = -1;
 
    MyAnalysis *A = new MyAnalysis();
@@ -54,17 +59,17 @@ int main() {
    ch2semi->Add(Form("%s/hep_TT_powheg.root",dir.Data()), nevt);
 ch2semi->Process(Bsemi);
 ///////// 
-   MyAnalysis *C = new MyAnalysis(1,1,61524,lumi,hC->GetBinContent(2));
+   MyAnalysis *C = new MyAnalysis(1,1,61526.7,lumi,hC->GetBinContent(2));
    TChain* ch3 = new TChain("TopTree/events");
    ch3->Add(Form("%s/hep_WJets.root",dir.Data()),nevt);
    ch3->Process(C);
    
-   MyAnalysis *D = new MyAnalysis(1,1,6025.2,lumi,hD->GetBinContent(1));
+   MyAnalysis *D = new MyAnalysis(1,1,6025.2,lumi,hD->GetBinContent(2));
    TChain* ch4 = new TChain("TopTree/events");
    ch4->Add(Form("%s/hep_DYJets.root",dir.Data()),nevt);
    ch4->Process(D);
   
-   MyAnalysis *E = new MyAnalysis(1,1,18610.0,lumi,hE->GetBinContent(1));
+   MyAnalysis *E = new MyAnalysis(1,1,18610.0,lumi,hE->GetBinContent(2));
    TChain* ch5 = new TChain("TopTree/events");
    ch5->Add(Form("%s/hep_DYJets_10to50.root",dir.Data()),nevt);
    ch5->Process(E);
@@ -103,10 +108,20 @@ ch2semi->Process(Bsemi);
    TChain* ch12 = new TChain("TopTree/events");
    ch12->Add(Form("%s/hep_ZZ.root",dir.Data()),nevt);
    ch12->Process(M);
- 
+//// 
+   MyAnalysis *qcd = new MyAnalysis(1,1,1652471.46,lumi,hP->GetBinContent(1));
+   TChain* ch13 = new TChain("TopTree/events");
+   ch13->Add(Form("%s/hep_30to50_MuEnriched.root",dir.Data()),nevt);
+   ch13->Process(qcd);
+  
+ MyAnalysis *Q = new MyAnalysis(1,1,2960198.4,lumi,hQ->GetBinContent(1));
+   TChain* ch14 = new TChain("TopTree/events");
+   ch14->Add(Form("%s/hep_20to30_MuEnriched.root",dir.Data()),nevt);
+   ch14->Process(Q);
+///
 Plotter P;
 
-   for (int i=0; i < 6 ;i++) {
+   for (int i=0; i < 7 ;i++) {
    //for (int i=0; i < D->histograms.size() ;i++) {
      //merge for DY
      D->histograms[i]->Add(E->histograms[i]);
@@ -118,7 +133,7 @@ Plotter P;
      N->histograms[i]->Add(O->histograms[i]);
      N->histograms[i]->Add(M->histograms[i]);
 ////tt bkg     
-  //   B->histograms[i]->Add(Bhad->histograms[i]);
+  qcd->histograms[i]->Add(Q->histograms[i]);
 
 } 
    P.SetData(A->histograms, std::string("Data"));
@@ -127,14 +142,18 @@ Plotter P;
    P.AddBg(D->histograms, std::string("DY"));
    P.AddBg(I->histograms, std::string("Single Top"));
    P.AddBg(N->histograms, std::string("VV"));
+   P.AddBg(B->histograms, std::string("TTOthers"));
+ P.AddBg(qcd->histograms, std::string("QCD"));
    
-  P.AddBg(B->histograms, std::string("TTOthers"));
-
-   P.Plot(string("results_TTbarOthers.pdf"));
+  P.Plot(string("results_qcd_Muenriched.pdf"));
 
    TFile * outA = TFile::Open("hist_data.root","RECREATE");
    for(int i=0; i < A->histograms.size(); i++){
      TH1F * tmp = (TH1F *) A->histograms[i];
+     tmp->Write();
+   }
+   for(int i=0; i < A->histograms_2D.size(); i++){
+     TH2D * tmp = (TH2D *) A->histograms_2D[i];
      tmp->Write();
    }
    outA->Write();
@@ -145,12 +164,20 @@ Plotter P;
      TH1F * tmp = (TH1F *) B->histograms[i];
      tmp->Write();
    }
+   for(int i=0; i < B->histograms_2D.size(); i++){
+     TH2D * tmp = (TH2D *) B->histograms_2D[i];
+     tmp->Write();
+   }
    outB->Write();
    outB->Close();
 
    TFile * outBsemi = TFile::Open("hist_TT_SemiLeptonic.root","RECREATE");
    for(int i=0; i < Bsemi->histograms.size(); i++){
      TH1F * tmp = (TH1F *) Bsemi->histograms[i];
+     tmp->Write();
+   }
+   for(int i=0; i < Bsemi->histograms_2D.size(); i++){
+     TH2D * tmp = (TH2D *) Bsemi->histograms_2D[i];
      tmp->Write();
    }
    outBsemi->Write();
@@ -161,6 +188,10 @@ Plotter P;
      TH1F * tmp = (TH1F *) C->histograms[i];
      tmp->Write();
    }
+   for(int i=0; i < C->histograms_2D.size(); i++){
+     TH2D * tmp = (TH2D *) C->histograms_2D[i];
+     tmp->Write();
+   }
    outC->Write();
    outC->Close();
 
@@ -169,6 +200,10 @@ Plotter P;
      TH1F * tmp = (TH1F *) D->histograms[i];
      tmp->Write();
     }
+   for(int i=0; i < D->histograms_2D.size(); i++){
+     TH2D * tmp = (TH2D *) D->histograms_2D[i];
+     tmp->Write();
+   }
    outD->Write();
    outD->Close();
    
@@ -177,6 +212,10 @@ Plotter P;
       TH1F * tmp = (TH1F *) I->histograms[i];
       tmp->Write();
     }
+   for(int i=0; i < I->histograms_2D.size(); i++){
+     TH2D * tmp = (TH2D *) I->histograms_2D[i];
+     tmp->Write();
+   }
     outI->Write();
     outI->Close();
 
@@ -184,8 +223,26 @@ Plotter P;
    for(int i=0; i < N->histograms.size(); i++){
      TH1F * tmp = (TH1F *) N->histograms[i];
      tmp->Write();
-
+   }
+   for(int i=0; i < N->histograms_2D.size(); i++){
+     TH2D * tmp = (TH2D *) N->histograms_2D[i];
+     tmp->Write();
    }
    outN->Write();
    outN->Close();
+
+  TFile * outP = TFile::Open("hist_QCD_MuEnriched.root","RECREATE");
+   for(int i=0; i < qcd->histograms.size(); i++){
+     TH1F * tmp = (TH1F *) qcd->histograms[i];
+     tmp->Write();
+   }
+   for(int i=0; i < qcd->histograms_2D.size(); i++){
+     TH2D * tmp = (TH2D *) qcd->histograms_2D[i];
+     tmp->Write();
+   }
+   outP->Write();
+   outP->Close();
+
+
+
 }

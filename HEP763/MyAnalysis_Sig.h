@@ -6,6 +6,9 @@
 #include <TChain.h>
 #include <TSelector.h>
 #include <TH1F.h>
+#include <TH1D.h>
+#include <TH2F.h>
+#include <TH2D.h>
 #include <TLorentzVector.h>
 #include <vector>
 
@@ -14,7 +17,6 @@
 #include "MyElectron.h"
 #include "MyPhoton.h"
 #include <iostream>
-
 using namespace std;
 // Header file for the classes stored in the TTree if any.
 // Fixed size dimensions of array or collections stored in the TTree if any.
@@ -243,7 +245,6 @@ public:
    float SF_b;
   int Channel;
  
-   TH1F *h_GenWeight[5];
    TH1F *h_Muon_Pt[5];
    TH1F *h_NMuon[5];
    TH1F *h_MuonIso[5];
@@ -253,20 +254,12 @@ public:
    TH1F *h_NJet[5]; 
    TH1F *h_NBJet[5]; 
    TH1F *h_MET[5]; 
-/*
-   TH1F *h_Mmumu[4];
-   TH1F *h_NMuon[4];
-   TH1F *h_MuonIso[4];
-   TH1F *h_NVertex[4];
-   TH1F *h_WMuon_MT[4];
-   TH1F *h_WMuon_Phi[4];
-   TH1F *h_NJet[4]; 
-   TH1F *h_NBJet[4]; 
-   TH1F *h_MET[4]; 
-  */
+   TH2D *hIso_vs_MET[5]; 
+   
    vector<TH1F*> histograms;
    vector<TH1F*> histograms_MC;
-   
+   vector<TH2D*> histograms_2D;  
+   vector<TH2D*> histograms_MC_2D;  
 };
 
 #endif
