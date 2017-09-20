@@ -1,0 +1,110 @@
+21-Jun-2017 11:05:29 KST  Initiating request to open file root://cms-xrdr.sdfarm.kr:1094///xrd/store/group/CAT/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/v8-0-6_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170303_103557/0000/catTuple_1.root
+%MSG-i XrdAdaptorInternal:  file_open 21-Jun-2017 11:05:31 KST pre-events
+Xrootd server at cms-t3-se-node02.sdfarm.kr:1094 did not provide a sitename.  Monitoring may be incomplete.
+%MSG
+%MSG-i XrdAdaptorInternal:  file_open 21-Jun-2017 11:05:31 KST pre-events
+Reading from new server cms-t3-se-node02.sdfarm.kr:1094 at site sdfarm.kr
+%MSG
+%MSG-i XrdFileInfo:  file_open 21-Jun-2017 11:05:31 KST pre-events
+Opened root://cms-xrdr.sdfarm.kr//xrd/store/group/CAT/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/v8-0-6_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170303_103557/0000/catTuple_1.root
+%MSG
+%MSG-i XrdFileInfo:  file_open 21-Jun-2017 11:05:31 KST pre-events
+Active sources: cms-t3-se-node02.sdfarm.kr:1094, 
+%MSG
+Time since last check 1001; last check 13823841; now 13823842; next check 13823846
+Reading from cms-t3-se-node02.sdfarm.kr:1094, quality 260
+Time since last check 2595; last check 13823841; now 13823844; next check 13823846
+Reading from cms-t3-se-node02.sdfarm.kr:1094, quality 9
+Finished timer after 0
+Time since last check 2596; last check 13823841; now 13823844; next check 13823846
+Reading from cms-t3-se-node02.sdfarm.kr:1094, quality 8
+Finished timer after 0
+Time since last check 3008; last check 13823841; now 13823844; next check 13823846
+Reading from cms-t3-se-node02.sdfarm.kr:1094, quality 7
+Finished timer after 760
+[1] Time for readv: 761 (sub-readv requests: 1)
+Time since last check 4321; last check 13823841; now 13823845; next check 13823846
+Reading from cms-t3-se-node02.sdfarm.kr:1094, quality 46
+Finished timer after 0
+Time since last check 35771; last check 13823841; now 13823877; next check 13823846
+Trying to open URL: root://cms-xrdr.sdfarm.kr//xrd/store/group/CAT/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/v8-0-6_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170303_103557/0000/catTuple_1.root?tried=cms-t3-se-node02.sdfarm.kr
+Reading from cms-t3-se-node02.sdfarm.kr:1094, quality 43
+Finished timer after 13
+Time since last check 20; last check 13823877; now 13823877; next check 13823882
+Reading from cms-t3-se-node02.sdfarm.kr:1094, quality 41
+%MSG-i XrdAdaptorInternal:  (NoModuleName) 21-Jun-2017 11:06:07 KST pre-events
+Xrootd server at cms-t3-se-node02.sdfarm.kr:1094 did not provide a sitename.  Monitoring may be incomplete.
+%MSG
+%MSG-i XrdAdaptorInternal:  (NoModuleName) 21-Jun-2017 11:06:07 KST pre-events
+Reading from new server cms-t3-se-node02.sdfarm.kr:1094 at site sdfarm.kr
+%MSG
+Successfully opened new source: cms-t3-se-node02.sdfarm.kr:1094 (unknown site)
+Xrootd server returned excluded source cms-t3-se-node02.sdfarm.kr:1094 (unknown site); ignoring
+Finished timer after 1238
+[2] Time for readv: 1238 (sub-readv requests: 1)
+Time since last check 1270; last check 13823877; now 13823878; next check 13823887
+Reading from cms-t3-se-node02.sdfarm.kr:1094, quality 95
+Finished timer after 198
+[3] Time for readv: 198 (sub-readv requests: 1)
+Time since last check 1470; last check 13823877; now 13823878; next check 13823887
+Reading from cms-t3-se-node02.sdfarm.kr:1094, quality 99
+Finished timer after 47
+[4] Time for readv: 47 (sub-readv requests: 1)
+Begin processing the 1st record. Run 1, Event 315595, LumiSection 1971 at 21-Jun-2017 11:06:07.735 KST
+Begin processing the 20th record. Run 1, Event 315616, LumiSection 1971 at 21-Jun-2017 11:06:09.385 KST
+Begin processing the 21st record. Run 1, Event 315614, LumiSection 1971 at 21-Jun-2017 11:06:09.392 KST
+Begin processing the 22nd record. Run 1, Event 315615, LumiSection 1971 at 21-Jun-2017 11:06:09.393 KST
+Time since last check 3180; last check 13823877; now 13823880; next check 13823887
+Reading from cms-t3-se-node02.sdfarm.kr:1094, quality 96
+Finished timer after 270
+[5] Time for readv: 270 (sub-readv requests: 1)
+Time since last check 3459; last check 13823877; now 13823880; next check 13823887
+Reading from cms-t3-se-node02.sdfarm.kr:1094, quality 102
+Finished timer after 44
+[6] Time for readv: 44 (sub-readv requests: 1)
+Time since last check 3505; last check 13823877; now 13823880; next check 13823887
+Reading from cms-t3-se-node02.sdfarm.kr:1094, quality 99
+Finished timer after 4
+[7] Time for readv: 4 (sub-readv requests: 1)
+Begin processing the 23rd record. Run 1, Event 315611, LumiSection 1971 at 21-Jun-2017 11:06:09.736 KST
+Begin processing the 77949th record. Run 1, Event 34315094, LumiSection 214202 at 21-Jun-2017 11:25:55.186 KST
+Begin processing the 77950th record. Run 1, Event 34315091, LumiSection 214202 at 21-Jun-2017 11:25:55.187 KST
+----- Begin Fatal Exception 21-Jun-2017 11:25:56 KST-----------------------
+An exception of category 'FileWriteError' occurred while
+   [0] Processing run: 1 lumi: 214202 event: 34315091
+   [1] Running path 'p'
+   [2] Calling event method for module TopAnalyzer/'TopTree'
+   [3] Calling IOChannel::write()
+Exception Message:
+write() failed with system error 'No space left on device' (error code 28)
+----- End Fatal Exception -------------------------------------------------
+%MSG-i XrdFileInfo:  file_close 21-Jun-2017 11:25:56 KST PostEndRun
+Closed root://cms-xrdr.sdfarm.kr//xrd/store/group/CAT/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/v8-0-6_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170303_103557/0000/catTuple_1.root
+%MSG
+21-Jun-2017 11:25:56 KST  Closed file root://cms-xrdr.sdfarm.kr:1094///xrd/store/group/CAT/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/v8-0-6_RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170303_103557/0000/catTuple_1.root
+
+TrigReport ---------- Event  Summary ------------
+TrigReport Events total = 77950 passed = 77949 failed = 1
+
+TrigReport ---------- Path   Summary ------------
+TrigReport  Trig Bit#   Executed     Passed     Failed      Error Name
+TrigReport     1    0      77950      77949          0          1 p
+
+TrigReport -------End-Path   Summary ------------
+TrigReport  Trig Bit#   Executed     Passed     Failed      Error Name
+
+TrigReport ---------- Modules in Path: p ------------
+TrigReport  Trig Bit#    Visited     Passed     Failed      Error Name
+TrigReport     1    0      77950      77950          0          0 flatGenWeights
+TrigReport     1    1      77950      77949          0          1 TopTree
+
+TrigReport ---------- Module Summary ------------
+TrigReport    Visited   Executed     Passed     Failed      Error Name
+TrigReport      77950      77950      77949          0          1 TopTree
+TrigReport      77949      77949      77949          0          0 TriggerResults
+TrigReport      77950      77950      77950          0          0 flatGenWeights
+
+TimeReport ---------- Event  Summary ---[sec]----
+TimeReport       event loop CPU/event = 0.014829
+TimeReport      event loop Real/event = 0.015267
+TimeR

@@ -1,0 +1,104 @@
+Resetting caches
+Done: ProjectRename
+BEGIN Thu Sep 7 15:47:23 KST 2017 cmsRun job_022_cfg.py
+total 456
+drwxr-xr-x. 2 dygyun dygyun 4096 Sep  7 15:46 .
+drwxr-xr-x. 4 dygyun dygyun 4096 Sep  7 15:46 ..
+-rw-r--r--. 1 dygyun dygyun    0 Sep  7 15:46 .create-batch
+-rw-r--r--. 1 dygyun dygyun 9769 Sep  7 15:46 job_000_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_001_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_002_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_003_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9772 Sep  7 15:46 job_004_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9769 Sep  7 15:46 job_005_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_006_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_007_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_008_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9772 Sep  7 15:46 job_009_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_010_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9769 Sep  7 15:46 job_011_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_012_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_013_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9772 Sep  7 15:46 job_014_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_015_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9769 Sep  7 15:46 job_016_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9772 Sep  7 15:46 job_017_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_018_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_019_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9772 Sep  7 15:46 job_020_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_021_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9770 Sep  7 15:46 job_022_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_023_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_024_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9772 Sep  7 15:46 job_025_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_026_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9769 Sep  7 15:46 job_027_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_028_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_029_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_030_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9772 Sep  7 15:46 job_031_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9771 Sep  7 15:46 job_032_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9769 Sep  7 15:46 job_033_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9760 Sep  7 15:46 job_034_cfg.py
+-rw-r--r--. 1 dygyun dygyun 9220 Sep  7 15:46 job_035_cfg.py
+-rw-r--r--. 1 dygyun dygyun    0 Sep  7 15:46 log.txt
+-rwxr-xr-x. 1 dygyun dygyun 1794 Sep  7 15:46 run_STop_t.sh
+-rw-r--r--. 1 dygyun dygyun  349 Sep  7 15:46 submit.jds
+-rw-r--r--. 1 dygyun dygyun   22 Sep  7 15:46 submit.log
+-rwxr-xr-x. 1 dygyun dygyun   37 Sep  7 15:46 submit.sh
+@@@ Inserting into scaleup weight[0] muR=1 muF=2 
+@@@ Inserting into scaledown weight[0] muR=1 muF=0.5 
+@@@ Inserting into scaleup weight[1] muR=2 muF=1 
+@@@ Inserting into scaleup weight[2] muR=2 muF=2 
+@@@ Skipping unphysical parameter muR=2 muF=0.5 
+@@@ Inserting into scaledown weight[1] muR=0.5 muF=1 
+@@@ Skipping unphysical parameter muR=0.5 muF=2 
+@@@ Inserting into scaledown weight[2] muR=0.5 muF=0.5 
+total 200712
+drwxr-xr-x. 2 dygyun dygyun      4096 Sep  7 15:47 .
+drwxr-xr-x. 4 dygyun dygyun      4096 Sep  7 15:46 ..
+-rw-r--r--. 1 dygyun dygyun         0 Sep  7 15:46 .create-batch
+-rw-r--r--. 1 dygyun dygyun      9769 Sep  7 15:46 job_000_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_001_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_002_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_003_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9772 Sep  7 15:46 job_004_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9769 Sep  7 15:46 job_005_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_006_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_007_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_008_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9772 Sep  7 15:46 job_009_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_010_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9769 Sep  7 15:46 job_011_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_012_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_013_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9772 Sep  7 15:46 job_014_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_015_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9769 Sep  7 15:46 job_016_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9772 Sep  7 15:46 job_017_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_018_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_019_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9772 Sep  7 15:46 job_020_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_021_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9770 Sep  7 15:46 job_022_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_023_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_024_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9772 Sep  7 15:46 job_025_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_026_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9769 Sep  7 15:46 job_027_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_028_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_029_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_030_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9772 Sep  7 15:46 job_031_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9771 Sep  7 15:46 job_032_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9769 Sep  7 15:46 job_033_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9760 Sep  7 15:46 job_034_cfg.py
+-rw-r--r--. 1 dygyun dygyun      9220 Sep  7 15:46 job_035_cfg.py
+-rw-r--r--. 1 dygyun dygyun         0 Sep  7 15:46 log.txt
+-rwxr-xr-x. 1 dygyun dygyun      1794 Sep  7 15:46 run_STop_t.sh
+-rw-r--r--. 1 dygyun dygyun       349 Sep  7 15:46 submit.jds
+-rw-r--r--. 1 dygyun dygyun        22 Sep  7 15:46 submit.log
+-rwxr-xr-x. 1 dygyun dygyun        37 Sep  7 15:46 submit.sh
+-rw-r--r--. 1 dygyun dygyun 205057580 Sep  7 16:37 vallot.root
+ENDED Thu Sep 7 16:37:47 KST 2017 cmsRun job_022_cfg.py
+FINISHED Thu Sep 7 16:37:52 KST 2017
